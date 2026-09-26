@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: 'ffe3c710-794f-4a10-90ee-51302d546218'
   imageRepository: 'kasheewebappimage'
   containerRegistry: 'devkregistry.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'devkregistry7e84-auth'
 
@@ -33,12 +33,15 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - checkout: self
+
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
         command: buildAndPush
         repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
+        buildContext: '$(Build.SourcesDirectory)'
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
