@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: kasheewebappimage 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kasheewebappimage
+  template:
+    metadata:
+      labels:
+        app: kasheewebappimage 
+    spec:
+      containers:
+        - name: kasheewebappimage 
+          image: devkregistry.azurecr.io/kasheewebappimage
+          ports:
+          - containerPort: 80
